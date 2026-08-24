@@ -54,7 +54,6 @@ install_aur_apps() {
     local apps=(
         "postman-bin:Postman"
         "notion-app-electron:Notion"
-        "whatsapp-for-linux:WhatsApp"
         "android-studio:Android Studio"
         "brave-bin:Brave"
         "spotify:Spotify"
@@ -68,17 +67,9 @@ install_aur_apps() {
         yay_install "$pkg" "$desc"
     done
 
-    # Proton VPN's GUI client moved into the official extra repo as
-    # proton-vpn-gtk-app, so it's installed via pacman, not yay.
     pacman_install "proton-vpn-gtk-app" "Proton VPN"
 
-    # Trello: the only AUR package ("trello") wraps an ancient Electron 17
-    # and has to compile Chromium/V8 from source (multi-GB clone, hours to
-    # build, and it's flagged broken upstream). There's no maintained
-    # binary AUR package for a Trello desktop app, so it's skipped here.
-    # Use the web app, or install trello via Notion/Slack's built-in
-    # browser shortcuts, or search flathub for a maintained alternative.
-    print_info "Trello skipped: no maintained AUR binary exists (only a broken from-source Electron build). Use the web app instead."
+    print_info "Trello and WhatsApp skipped here (unreliable/broken AUR packages) - installed via snap instead."
 }
 
 install_firefox() {

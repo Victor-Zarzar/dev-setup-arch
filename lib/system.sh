@@ -50,19 +50,6 @@ install_zsh() {
 
     pacman_install "zsh" "Zsh"
 
-    if [ -d "$HOME/.oh-my-zsh" ]; then
-        print_info "Oh My Zsh already installed"
-    else
-        print_info "Installing Oh My Zsh..."
-        if RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" >> "$LOG_FILE" 2>&1; then
-            print_success "Oh My Zsh installed"
-            ((TOTAL_INSTALLED++))
-            log_action "Oh My Zsh installed"
-        else
-            print_error "Failed to install Oh My Zsh"
-        fi
-    fi
-
     print_info "zsh-autosuggestions will be installed via Homebrew (option 20)"
     print_warning "Run 'chsh -s \$(which zsh)' to set Zsh as your default shell"
 }

@@ -15,6 +15,7 @@ source "$SCRIPT_DIR/lib/fonts.sh"
 source "$SCRIPT_DIR/lib/system.sh"
 source "$SCRIPT_DIR/lib/pacman.sh"
 source "$SCRIPT_DIR/lib/aur.sh"
+source "$SCRIPT_DIR/lib/snap.sh"
 source "$SCRIPT_DIR/lib/flatpak.sh"
 source "$SCRIPT_DIR/lib/brew.sh"
 source "$SCRIPT_DIR/lib/manual.sh"
@@ -58,7 +59,8 @@ show_menu() {
     echo "22) Configure Git"
     echo "23) Install Bun"
     echo "24) Install Nvidia drivers"
-    echo "25) View installation log"
+    echo "25) Install Snap applications (Trello, WhatsApp, ZAP)"
+    echo "26) View installation log"
     echo "0)  Exit"
     echo ""
     echo -n "Choose an option: "
@@ -69,6 +71,12 @@ run_full_setup() {
     echo -e "${YELLOW}Starting complete setup...${NC}\n"
 
     update_system
+
+    # base-devel first: yay and most AUR builds (makepkg) fail without it,
+    # so it must be in place before setup_yay or any AUR/yay install runs.
+    print_section "Installing Build Essentials"
+    pacman_install "base-devel" "base-devel (build tools group)"
+
     setup_yay
     setup_directories
     install_git
@@ -78,6 +86,7 @@ run_full_setup() {
     install_devops_tools
     install_python_env
     install_aur_apps
+    install_snap_apps
     install_nodejs_tools
     install_docker
     install_browsers
@@ -147,7 +156,8 @@ main() {
             22) configure_git ;;
             23) install_bun ;;
             24) install_nvidia_drivers ;;
-            25) cat "$LOG_FILE" | less ;;
+            25) install_snap_apps ;;
+            26) cat "$LOG_FILE" | less ;;
             0)
                 print_success "Goodbye!"
                 log_action "Script finished"
